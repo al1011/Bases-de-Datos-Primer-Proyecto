@@ -454,7 +454,7 @@ class AppAgenda(ctk.CTk):
         self.tree_ubicaciones = self.crear_treeview(frame_tree_ubicaciones, ("ID", "Nombre", "Dirección", "Ciudad", "Capacidad"), (50, 150, 150, 100, 80))
         self.tree_ubicaciones.bind("<<TreeviewSelect>>", self.cargar_ubicacion_seleccionada)
 
-        ctk.CTkLabel(panel_tablas, text="Reporte de Ocupación de Recintos (RF-10)", font=ctk.CTkFont(weight="bold")).grid(row=1, column=0, sticky="w", pady=(10, 5))
+        ctk.CTkLabel(panel_tablas, text="Reporte de Ocupación de Recintos", font=ctk.CTkFont(weight="bold")).grid(row=1, column=0, sticky="w", pady=(10, 5))
 
         frame_tree_reporte_ubicaciones = ctk.CTkFrame(panel_tablas, fg_color="transparent")
         frame_tree_reporte_ubicaciones.grid(row=2, column=0, sticky="nsew")
@@ -746,17 +746,23 @@ class AppAgenda(ctk.CTk):
                 ORDER BY e.fecha_inicio DESC
             """, fetch=True)
             for item in self.tree_eventos.get_children(): self.tree_eventos.delete(item)
+            self.eventos_combo = {}
             for row in rows:
                 usuario = f"{row[2]} {row[3]} — #{row[1]}"
                 categoria = f"{row[5]} — #{row[4]}"
                 inicio = row[7].strftime("%Y-%m-%d %H:%M") if hasattr(row[7], "strftime") else row[7]
                 fin = row[8].strftime("%Y-%m-%d %H:%M") if hasattr(row[8], "strftime") else row[8]
                 self.tree_eventos.insert("", "end", values=(row[0], usuario, categoria, row[6], inicio, fin))
+                self.eventos_combo[f"{row[6]} — #{row[0]}"] = row[0]
 
             valores_u = ["Seleccione un usuario"] + list(self.usuarios_combo.keys())
             valores_c = ["Seleccione una categoría"] + list(self.categorias_combo.keys())
             self.combo_ev_usuario.configure(values=valores_u)
             self.combo_ev_categoria.configure(values=valores_c)
+
+            if hasattr(self, 'combo_tar_evento'):
+                self.combo_tar_evento.configure(values=["Seleccione evento"] + list(self.eventos_combo.keys()))
+
         except Exception as e:
             print(f"Error cargando eventos: {e}")
 
