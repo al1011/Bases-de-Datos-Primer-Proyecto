@@ -133,8 +133,8 @@ class AppAgenda(ctk.CTk):
         for i, (nombre, icono) in enumerate([
             ("Usuarios", "👥"),
             ("Categorías", "📁"),
-            ("Eventos", "📆"),    #No me gustaba ese espacio entonces cambie el emoji :P
             ("Ubicaciones", "📍"),
+            ("Eventos", "📆"),    #No me gustaba ese espacio entonces cambie el emoji :P
             ("Disponibilidad", "📲"),
             ("Tareas", "📄"),
         ], start=2):
@@ -174,15 +174,15 @@ class AppAgenda(ctk.CTk):
 
         self.tab_usuarios = self.tabview.add("Usuarios")
         self.tab_categorias = self.tabview.add("Categorías")
-        self.tab_eventos = self.tabview.add("Eventos")
         self.tab_ubicaciones = self.tabview.add("Ubicaciones")
+        self.tab_eventos = self.tabview.add("Eventos")
         self.tab_disponibilidad = self.tabview.add("Disponibilidad")
         self.tab_tareas = self.tabview.add("Tareas")
 
         self.configurar_pestana_usuarios()
         self.configurar_pestana_categorias()
-        self.configurar_pestana_eventos()
         self.configurar_pestana_ubicaciones()
+        self.configurar_pestana_eventos()
         self.configurar_pestana_disponibilidad()
         self.configurar_pestana_tareas()
 
@@ -693,7 +693,7 @@ class AppAgenda(ctk.CTk):
         except ValueError:
             raise ValueError("La hora debe tener formato HH:MM, por ejemplo 09:30.")
         if not titulo or usuario is None or categoria is None:
-            raise ValueError("Completa título, propietario y categoría.")
+            raise ValueError("Complete todos los campos para crear el evento.")
         if fin <= inicio:
             raise ValueError("La fecha y hora de finalización deben ser posteriores al inicio.")
         return usuario, categoria, titulo, inicio, fin
